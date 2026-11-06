@@ -225,13 +225,13 @@ python -m src.model_evaluation
 ## Screenshots
 
 ### Homepage
-![CineMatch Homepage](screenshots/homepage.png)
+![CineMatch Homepage](screenshots/home.png)
 
 ### Movie Search
 ![Movie Search](screenshots/movie_search.png)
 
-### Recommendations
-![Movie Recommendations](screenshots/recommendations.png)
-
 ### Popular Movies
 ![Popular Movies](screenshots/popular_movies.png)
+
+### Recommendations
+![Movie Recommendations](screenshots/recommendations.png)
