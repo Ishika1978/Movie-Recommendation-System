@@ -1,0 +1,84 @@
+
+# ==============================
+# ENVIRONMENT VARIABLES & SECRETS
+# ==============================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+credentials.json
+
+# ==============================
+# PYTHON CACHE
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ==============================
+# VIRTUAL ENVIRONMENTS
+# ==============================
+venv/
+env/
+ENV/
+.venv/
+
+# ==============================
+# JUPYTER NOTEBOOKS
+# ==============================
+.ipynb_checkpoints/
+
+# ==============================
+# MACHINE LEARNING MODELS
+# ==============================
+*.h5
+*.keras
+*.pt
+*.pth
+*.onnx
+
+# ==============================
+# LOGS
+# ==============================
+*.log
+logs/
+
+# ==============================
+# IDE & EDITOR FILES
+# ==============================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==============================
+# OPERATING SYSTEM FILES
+# ==============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# TESTING & COVERAGE
+# ==============================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==============================
+# BUILD FILES
+# ==============================
+build/
+dist/
+*.egg-info/
+
+# ==============================
+# TEMPORARY FILES
+# ==============================
+*.tmp
+*.temp
+*.bak

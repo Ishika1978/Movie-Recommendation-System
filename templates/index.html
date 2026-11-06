@@ -1,0 +1,918 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CineMatch | Movie Recommendation System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4169E1;
+            --primary-dark: #3154C5;
+            --background: #F8FAFF;
+            --white: #FFFFFF;
+            --lavender: #EAE7FF;
+            --navy: #25345C;
+            --text: #4F5D7A;
+            --muted: #8993AA;
+            --border: #E5EAF5;
+            --shadow: 0 8px 30px rgba(48, 70, 130, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        button, input, select {
+            font: inherit;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 19px 8%;
+            background: var(--white);
+            box-shadow: 0 3px 18px rgba(37, 52, 92, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 500px;
+            padding: 85px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            background: linear-gradient(120deg, #F8FAFF, #EAE7FF);
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--lavender);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.15;
+            font-weight: 800;
+            margin-bottom: 22px;
+            color: var(--navy);
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: var(--text);
+            font-size: 17px;
+            max-width: 520px;
+            margin-bottom: 30px;
+        }
+
+        .primary-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 250px;
+        }
+
+        .hero-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 35%;
+            background: linear-gradient(145deg, #FFFFFF, #DCD7FF);
+            box-shadow: 0 20px 50px rgba(65, 105, 225, 0.13);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 105px;
+            transform: rotate(5deg);
+        }
+
+        /* STATISTICS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 0 10%;
+            margin-top: -35px;
+            position: relative;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 27px;
+            text-align: center;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card h2 {
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .stat-card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* COMMON SECTION */
+
+        section:not(.hero):not(.stats) {
+            padding: 85px 9%;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 38px;
+        }
+
+        .section-heading h2 {
+            font-size: 34px;
+            margin-bottom: 10px;
+            color: var(--navy);
+        }
+
+        .section-heading p {
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        /* SEARCH SECTION */
+
+        .recommend-section {
+            background: var(--white);
+        }
+
+        .search-container {
+            display: flex;
+            max-width: 750px;
+            margin: 0 auto 25px;
+            gap: 12px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: var(--white);
+            color: var(--navy);
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.10);
+        }
+
+        input::placeholder {
+            color: #A0A9BC;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 14px 23px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .recommend-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            max-width: 650px;
+            margin: 30px auto;
+        }
+
+        .recommend-controls select {
+            max-width: 340px;
+        }
+
+        /* MOVIE GRID */
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        .movie-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 23px;
+            box-shadow: 0 5px 20px rgba(37, 52, 92, 0.05);
+            transition: 0.3s;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(65, 105, 225, 0.12);
+        }
+
+        .movie-icon {
+            height: 65px;
+            width: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--lavender);
+            border-radius: 14px;
+            font-size: 30px;
+            margin-bottom: 16px;
+        }
+
+        .movie-card h3 {
+            font-size: 17px;
+            margin-bottom: 9px;
+            color: var(--navy);
+        }
+
+        .movie-card p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .movie-card button {
+            font-size: 13px;
+            padding: 10px 16px;
+        }
+
+        .movie-card .score {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .message {
+            text-align: center;
+            color: var(--muted);
+            padding: 20px;
+            grid-column: 1 / -1;
+        }
+
+        .selected-message {
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        /* POPULAR MOVIES */
+
+        .popular-section {
+            background: #F1F3FF;
+            text-align: center;
+        }
+
+        /* FEATURES */
+
+        .features {
+            background: var(--background);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 32px 25px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-card div {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #EAE7FF;
+            padding: 40px 8%;
+            text-align: center;
+            color: var(--text);
+        }
+
+        footer h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+
+        footer small {
+            display: block;
+            margin-top: 20px;
+            color: var(--muted);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                gap: 16px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 65px 7%;
+            }
+
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-circle {
+                width: 175px;
+                height: 175px;
+                font-size: 75px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                margin-top: 25px;
+            }
+
+            .search-container,
+            .recommend-controls {
+                flex-direction: column;
+            }
+
+            .recommend-controls select {
+                max-width: 100%;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section:not(.hero):not(.stats) {
+                padding: 60px 7%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">🎬 CineMatch</div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#recommend">Recommendations</a>
+            <a href="#popular">Popular Movies</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+            <span class="tag">AI POWERED MOVIE DISCOVERY</span>
+
+            <h1>
+                Find Your Next<br>
+                <span>Favorite Movie.</span>
+            </h1>
+
+            <p>
+                Discover movies you'll love with intelligent
+                machine learning recommendations.
+            </p>
+
+            <a href="#recommend" class="primary-btn">
+                Explore Movies →
+            </a>
+        </div>
+
+        <div class="hero-image">
+            <div class="hero-circle">🎥</div>
+        </div>
+
+    </section>
+
+    <!-- STATISTICS -->
+    <section class="stats">
+
+        <div class="stat-card">
+            <h2 id="movieCount">{{ movie_count|default('9,742') }}</h2>
+            <p>Movies</p>
+        </div>
+
+        <div class="stat-card">
+            <h2 id="ratingCount">{{ rating_count|default('100,836') }}</h2>
+            <p>User Ratings</p>
+        </div>
+
+        <div class="stat-card">
+            <h2 id="userCount">{{ user_count|default('610') }}</h2>
+            <p>Users</p>
+        </div>
+
+    </section>
+
+    <!-- RECOMMENDATIONS -->
+    <section class="recommend-section" id="recommend">
+
+        <div class="section-heading">
+            <span class="tag">PERSONALIZED DISCOVERY</span>
+            <h2>Movie Recommendations</h2>
+            <p>Search and select a movie to discover similar films.</p>
+        </div>
+
+        <div class="search-container">
+
+            <input
+                type="text"
+                id="movieSearch"
+                placeholder="Search your favorite movie..."
+                autocomplete="off"
+            >
+
+            <button id="searchButton" onclick="searchMovies()">
+                Search
+            </button>
+
+        </div>
+
+        <div id="searchResults" class="movie-grid"></div>
+
+        <div id="selectedMessage" class="selected-message"></div>
+
+        <div class="recommend-controls">
+
+            <select id="algorithm">
+                <option value="hybrid">Hybrid Recommendation</option>
+                <option value="content">Content-Based Filtering</option>
+                <option value="collaborative">Collaborative Filtering</option>
+            </select>
+
+            <button id="recommendButton" onclick="getRecommendations()">
+                Get Recommendations
+            </button>
+
+        </div>
+
+        <div id="recommendationResults" class="movie-grid"></div>
+
+    </section>
+
+    <!-- POPULAR MOVIES -->
+    <section class="popular-section" id="popular">
+
+        <div class="section-heading">
+            <span class="tag">TRENDING PICKS</span>
+            <h2>Popular Movies</h2>
+            <p>Explore highly rated movies from our collection.</p>
+        </div>
+
+        <button id="popularButton" onclick="loadPopularMovies()">
+            Explore Popular Movies
+        </button>
+
+        <div id="popularResults" class="movie-grid"></div>
+
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+
+        <div class="section-heading">
+            <span class="tag">TECHNOLOGY</span>
+            <h2>How CineMatch Works</h2>
+            <p>Smart algorithms make discovering movies easier.</p>
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <div>🎯</div>
+                <h3>Content-Based Filtering</h3>
+                <p>
+                    Find movies with similar genres
+                    and characteristics.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div>👥</div>
+                <h3>Collaborative Filtering</h3>
+                <p>
+                    Discover movies using patterns
+                    in user ratings.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div>✨</div>
+                <h3>Hybrid Recommendation</h3>
+                <p>
+                    Combine recommendation techniques
+                    for better movie discovery.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <h2>🎬 CineMatch</h2>
+        <p>Machine Learning Movie Recommendation System</p>
+        <p>Built with Python, Flask and Scikit-learn</p>
+        <small></small>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        let selectedMovie = null;
+
+        // Prevent HTML injection in movie titles and genres
+        function escapeHTML(value) {
+            return String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[char]);
+        }
+
+        function showMessage(elementId, message) {
+            document.getElementById(elementId).innerHTML =
+                `<p class="message">${escapeHTML(message)}</p>`;
+        }
+
+        async function fetchJSON(url, options = {}) {
+            const response = await fetch(url, options);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Something went wrong.");
+            }
+
+            return data;
+        }
+
+        // SEARCH MOVIES
+        async function searchMovies() {
+
+            const query = document.getElementById("movieSearch").value.trim();
+            const container = document.getElementById("searchResults");
+            const button = document.getElementById("searchButton");
+
+            if (!query) {
+                showMessage("searchResults", "Please enter a movie name.");
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = "Searching...";
+
+            showMessage("searchResults", "Searching movies...");
+
+            try {
+
+                const data = await fetchJSON(
+                    `/api/search?q=${encodeURIComponent(query)}`
+                );
+
+                container.innerHTML = "";
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    showMessage("searchResults", "No movies found. Try another title.");
+                    return;
+                }
+
+                data.forEach(movie => {
+
+                    const card = document.createElement("div");
+                    card.className = "movie-card";
+
+                    card.innerHTML = `
+                        <div class="movie-icon">🎬</div>
+                        <h3>${escapeHTML(movie.title)}</h3>
+                        <p>${escapeHTML(movie.genres || "Genre not available")}</p>
+                        <button class="select-movie-button">Select Movie</button>
+                    `;
+
+                    card.querySelector("button").addEventListener("click", () => {
+                        selectMovie(movie.movieId, movie.title);
+                    });
+
+                    container.appendChild(card);
+
+                });
+
+            } catch (error) {
+
+                showMessage("searchResults", error.message);
+
+            } finally {
+
+                button.disabled = false;
+                button.textContent = "Search";
+
+            }
+        }
+
+        // SELECT MOVIE
+        function selectMovie(movieId, title) {
+
+            selectedMovie = movieId;
+
+            document.getElementById("selectedMessage").textContent =
+                `Selected movie: ${title}`;
+
+            document.getElementById("recommendationResults").innerHTML = "";
+
+        }
+
+        // GET RECOMMENDATIONS
+        async function getRecommendations() {
+
+            if (selectedMovie === null) {
+                alert("Please search and select a movie first.");
+                return;
+            }
+
+            const algorithm = document.getElementById("algorithm").value;
+            const button = document.getElementById("recommendButton");
+
+            button.disabled = true;
+            button.textContent = "Finding Movies...";
+
+            showMessage("recommendationResults", "Generating recommendations...");
+
+            try {
+
+                const data = await fetchJSON("/api/recommend", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        movie_id: selectedMovie,
+                        algorithm: algorithm
+                    })
+
+                });
+
+                displayMovies(data, "recommendationResults");
+
+            } catch (error) {
+
+                showMessage("recommendationResults", error.message);
+
+            } finally {
+
+                button.disabled = false;
+                button.textContent = "Get Recommendations";
+
+            }
+        }
+
+        // LOAD POPULAR MOVIES
+        async function loadPopularMovies() {
+
+            const button = document.getElementById("popularButton");
+
+            button.disabled = true;
+            button.textContent = "Loading...";
+
+            showMessage("popularResults", "Loading popular movies...");
+
+            try {
+
+                const data = await fetchJSON("/api/popular");
+
+                displayMovies(data, "popularResults");
+
+            } catch (error) {
+
+                showMessage("popularResults", error.message);
+
+            } finally {
+
+                button.disabled = false;
+                button.textContent = "Explore Popular Movies";
+
+            }
+        }
+
+        // DISPLAY MOVIES
+        function displayMovies(data, elementId) {
+
+            const container = document.getElementById(elementId);
+
+            container.innerHTML = "";
+
+            if (!Array.isArray(data) || data.length === 0) {
+                showMessage(elementId, "No movies available.");
+                return;
+            }
+
+            data.forEach(movie => {
+
+                const card = document.createElement("div");
+                card.className = "movie-card";
+
+                let extraInfo = "";
+
+                if (movie.hybrid_score !== undefined) {
+                    extraInfo += `
+                        <p class="score">
+                            Recommendation Score:
+                            ${Number(movie.hybrid_score).toFixed(3)}
+                        </p>
+                    `;
+                }
+
+                if (movie.similarity_score !== undefined) {
+                    extraInfo += `
+                        <p class="score">
+                            Similarity:
+                            ${Number(movie.similarity_score).toFixed(3)}
+                        </p>
+                    `;
+                }
+
+                if (movie.average_rating !== undefined) {
+                    extraInfo += `
+                        <p class="score">
+                            Rating:
+                            ${Number(movie.average_rating).toFixed(2)} / 5
+                        </p>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="movie-icon">🍿</div>
+                    <h3>${escapeHTML(movie.title)}</h3>
+                    <p>${escapeHTML(movie.genres || "Genre not available")}</p>
+                    ${extraInfo}
+                `;
+
+                container.appendChild(card);
+
+            });
+        }
+
+        // ENTER KEY TO SEARCH
+        document.getElementById("movieSearch").addEventListener("keydown", event => {
+
+            if (event.key === "Enter") {
+                searchMovies();
+            }
+
+        });
+
+        // LOAD POPULAR MOVIES WHEN WEBSITE OPENS
+        document.addEventListener("DOMContentLoaded", () => {
+            loadPopularMovies();
+        });
+
+    </script>
+
+</body>
+</html>

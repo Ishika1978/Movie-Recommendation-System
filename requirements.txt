@@ -1,0 +1,10 @@
+
+Flask
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
+jupyter
+nbformat
+joblib
